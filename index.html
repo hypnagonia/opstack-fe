@@ -92,8 +92,8 @@
             box-sizing: border-box;
             border-right: 1px solid #ccc;
             overflow-y: auto;
-            max-height: 400px;
-            min-height: 400px;
+            max-height: 460px;
+            min-height: 460px;
         }
 
         .upload-section:last-child {
@@ -123,28 +123,72 @@
 <body>
     <div class="container2">
         <div class="pad">
-            <h1>Openrank</h1>
+
+            <h1>
+                Developer Reputation Scores based on Github Activities<br />
+                <span style="font-size: 14px; display: flex; align-items: center;">
+                    Powered by
+                    <img src="openrank-logo.svg" alt="OpenRank Logo"
+                        style="height: 24px; background-color: black; margin-left: 5px;margin-right: 20px;" />
+                    Powered by
+                    <img src="oso.avif" alt="OSO Logo" style="height: 24px; margin-left: 5px;" />
+                    OSO
+                </span>
+            </h1>
 
 
         </div>
         <div class="line"></div>
         <div class="container">
             <div class="upload-section" id="localTrustSection">
-                <h1>Local Trust</h1><br />
-                <input type="file" id="localTrustInput" accept=".csv">
-                <br />
-                <br />
-                <input type="url" id="localTrustUrlInput" placeholder="Enter URL for Local Trust CSV">
+                <h1>OPStack Github Developer Reputation Ranking Trust Arcs</h1><br />
+                <div style="font-size: 14px;">
 
+                    Recurisive trust is defined using Github activity graph and the below two different trust arcs
+                    in the graph:
+
+
+                    <li><b>User-to-repository trust</b> - actions such as stars, forks and issue/PR submissions.
+                    </li>
+                    <li><b>Repository-to-user trust</b> - actions such as PRs merged, direct code commits received,
+                        and
+                        other maintenance actions.</li>
+
+
+                </div>
+                <div style="visibility: hidden;display:none;">
+
+                    <br />
+                    <input type="file" id="localTrustInput" accept=".csv">
+                    <br />
+                    <br />
+                    <input type="url" id="localTrustUrlInput" placeholder="Enter URL for Local Trust CSV">
+                </div>
                 <pre id="localTrustContent">Upload Local Trust CSV</pre>
+
+
             </div>
             <div class="upload-section" id="preTrustSection">
-                <h1>Seed Trust</h1><br />
-                <input type="file" id="preTrustInput" accept=".csv">
-                <br /><br />
-                <textarea id="preTrustTextArea" placeholder="Enter Seed Trust values (optional)"></textarea>
+                <h1>Play with changing Seed Trust</h1><br /><br />
+                <div style="font-size: 14px;">
+
+                    Seeds are repos and/users which are regarded as the source of reputation to propagate trust down
+                    the the recursive trust arcs. Change the default to see difference in Github user/repo ranking
+                    results.”
+                    <br /><br /><br />
+
+                </div>
                 <br />
-                <pre id="preTrustContent">Upload Seed Trust CSV</pre>
+                <div style="display:none;">
+                    <input type="file" id="preTrustInput2" accept=".csv">
+                    <br /><br />
+                    
+                    <br />
+                    <pre id="preTrustContent2">Upload Seed Trust CSV</pre>
+                </div>
+
+                <textarea id="preTrustTextArea" placeholder="Enter Seed Trust values">0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,1
+                    </textarea>
             </div>
 
         </div>
@@ -155,13 +199,162 @@
             <input type="number" id="alphaValueInput" placeholder="Alpha = 0.5" step="0.01" defaul="0.5">
             <pre><span id="result"></span>[]</pre>
         </div>
+
+
     </div>
 
     <script type="module">
-        let localtrustBytes = `alice,bob,2\nbob,charlie,2\nalice,charlie,1\ncharlie,bob,1\n`
-        let pretrustBytes = 'alice,1\n'
+        let localtrustBytes = `0x25ce4ab6a11b030fd8be5b0e157b0cc88c469041,0xcf1edb26503275aa0fb13ff84ff2d1390616d2d7,1
+0x25ce4ab6a11b030fd8be5b0e157b0cc88c469041,0x861a67d858571cea12ee57aee48690942ffaa74c,1
+0xcf1edb26503275aa0fb13ff84ff2d1390616d2d7,0x861a67d858571cea12ee57aee48690942ffaa74c,1
+0xa60e96a827bd1fd1e0aed91c35503c2759f3ae42,0x861a67d858571cea12ee57aee48690942ffaa74c,1
+0xef206dea41d9cc559f57d8563146f42c3dd3e88f,0x861a67d858571cea12ee57aee48690942ffaa74c,1
+0xef206dea41d9cc559f57d8563146f42c3dd3e88f,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xef206dea41d9cc559f57d8563146f42c3dd3e88f,0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x6c692d6ae433045c5815cb079989a6c7e3e44d21,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0xef206dea41d9cc559f57d8563146f42c3dd3e88f,1
+0x84e1056ed1b76fb03b43e924ef98833dba394b2b,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x134fe5ba258f932b2aa5c85ef872fada0cbb4392,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x134fe5ba258f932b2aa5c85ef872fada0cbb4392,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xb97214755c216b482a298aec26075dcd7bcefb86,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x9fc3b33884e1d056a8ca979833d686abd267f9f8,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0xc624988e09891ffa99cf876f7c69e4b8fe3065b3,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xc624988e09891ffa99cf876f7c69e4b8fe3065b3,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xfec0ba4dc0c37d4ca9e288ee86a547adf6208a49,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x9fc3b33884e1d056a8ca979833d686abd267f9f8,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0xd89a47c8a2283e1d9bf85e3907be98cc3f341593,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x662ca97f4ab71fec6964e1e751e2b3c967f7a47c,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x66f77ac6aeb4ca86b7c74fe6c634fa2e294a9661,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x596a93db265dd748fe5c75e606adff3ea34f61d1,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x02a72042af3af336f4d0b465881cd0174a1dba33,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x265e788a6d0b54216be125b0e82f5f7f2db0c961,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x265e788a6d0b54216be125b0e82f5f7f2db0c961,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0xd940b1bdd9534fbfe5b05023da44f9cc308a266f,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x9fc3b33884e1d056a8ca979833d686abd267f9f8,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x02a72042af3af336f4d0b465881cd0174a1dba33,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0xb97214755c216b482a298aec26075dcd7bcefb86,1
+0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,0x596a93db265dd748fe5c75e606adff3ea34f61d1,1
+0xb97214755c216b482a298aec26075dcd7bcefb86,0x55795567d4e13fcaf30515fd6e0d93f62c297557,1`
+
+        let pretrustBytes = '0x8f6a4aa5cde7b78f28732a5d811198d79d9b4de4,1'
         document.getElementById('localTrustContent').textContent = localtrustBytes
-        document.getElementById('preTrustContent').textContent = pretrustBytes;
+        // document.getElementById('preTrustContent').textContent = pretrustBytes;
         localtrustBytes = new TextEncoder().encode(localtrustBytes)
         pretrustBytes = new TextEncoder().encode(pretrustBytes)
 
@@ -184,6 +377,7 @@
             reader.readAsText(file)
         })
 
+        /*
         document.getElementById('preTrustInput').addEventListener('change', async function (event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -202,7 +396,8 @@
 
             reader.readAsText(file);
         });
-
+        */
+       
         const worker = new Worker('worker.js');
         worker.onmessage = function (e) {
             document.getElementById('result').innerHTML = e.data
@@ -243,7 +438,7 @@
                 const seedTrustText = document.getElementById('preTrustTextArea').value;
                 if (seedTrustText.trim()) {
                     pretrustBytes = new TextEncoder().encode(seedTrustText.trim());
-                    document.getElementById('preTrustContent').textContent = "Seed trust data from text input";
+                    // document.getElementById('preTrustContent').textContent = "Seed trust data from text input";
                 } else if (!pretrustBytes) {
                     alert('Add Seed Trust CSV or fill in the Seed Trust text area');
                     return;
@@ -265,6 +460,8 @@
 
                 document.getElementById('calculate').classList.add("disabled")
                 document.getElementById('result').innerHTML = 'Running...'
+
+
                 worker.postMessage({ localtrustBytes, pretrustBytes, alpha });
             })
         }
